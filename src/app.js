@@ -20,8 +20,24 @@ app.post("/sign-up", (req, res) => {
   res.status(201).send("OK");
 });
 
-app.post("/tweets", (req, res) => {});
+app.post("/tweets", (req, res) => {
+  const { username, tweet } = req.body;
 
-app.get("/tweets", (req, res) => {});
+  if (!username || !tweet) {
+    return res.status(400).send("Informações faltando");
+  }
+
+  const userExist = users.find((user) => user.username === username);
+
+  if (!userExist) {
+    return res.status(401).send("UNAUTHORIZED");
+  }
+
+  messages.push(req.body);
+
+  res.status(201).send("OK");
+});
+
+// app.get("/tweets", (req, res) => {});
 
 app.listen(PORT, () => console.log(`Running in port: ${PORT}`));
