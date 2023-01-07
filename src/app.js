@@ -17,6 +17,7 @@ app.post("/sign-up", (req, res) => {
     return res.status(400).send("Informações faltando");
   }
 
+  users.push(req.body);
   res.status(201).send("OK");
 });
 
@@ -38,6 +39,14 @@ app.post("/tweets", (req, res) => {
   res.status(201).send("OK");
 });
 
-// app.get("/tweets", (req, res) => {});
+app.get("/tweets", (req, res) => {
+  messages.forEach((message) => {
+    const { avatar } = users.find((user) => user.username === message.username);
+    message.avatar = avatar;
+  });
+
+  const shownMessages = messages.slice(-10);
+  res.send(shownMessages);
+});
 
 app.listen(PORT, () => console.log(`Running in port: ${PORT}`));
